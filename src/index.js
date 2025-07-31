@@ -24,7 +24,7 @@ app.use(express.json());
 
 app.use('/message', ContactRoute);
 
-const PORT = process.env.PORT || 3000;
+const PORT = 8081;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
