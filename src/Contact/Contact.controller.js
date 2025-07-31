@@ -30,14 +30,14 @@ export const createMessage = async (req, res) => {
         const smtp = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "vishallengare61@gmail.com",
-                pass: "praqsekpoaisfkip",
+                user: process.env.SMTP_EMAIL,
+                pass: process.env.SMTP_PASSWORD,
             },
         });
 
         // Send confirmation email to the sender (HR or user)
         await smtp.sendMail({
-            from: "vishallengare61@gmail.com",
+            from: process.env.SMTP_EMAIL,
             to: email,
             subject: "Thank You for Contacting Me!",
             html: emailTemplate(name, mobile, message),
@@ -45,8 +45,8 @@ export const createMessage = async (req, res) => {
 
         // Send a notification email to yourself (so you get the message in your inbox)
         await smtp.sendMail({
-            from: "vishallengare61@gmail.com",
-            to: "vishallengare61@gmail.com", // Your email to receive the message
+            from: process.env.SMTP_EMAIL,
+            to: process.env.SMTP_EMAIL, // Your email to receive the message
             subject: `New Message from ${name}`,
             html: adminNotificationTemplate(name, email, mobile, message),
         });
@@ -61,7 +61,6 @@ export const createMessage = async (req, res) => {
 
 // ✅ Email Template for the Sender (HR/User)
 const emailTemplate = (name, mobile, message) => {
-    const email = "vishallengare61@gmail.com"
     return `
     <!DOCTYPE html>
     <html lang="en">
@@ -86,7 +85,7 @@ const emailTemplate = (name, mobile, message) => {
                 <p><strong>Your Message:</strong></p>
                 <div class="message-box">${message}</div>
                 <p>If your inquiry is urgent, feel free to contact me directly.</p>
-                <p class="contact-info">📧 Email: ${email} | 📞 Mobile: +91-8806014060</p>
+                <p class="contact-info">📧 Email: ${process.env.SMTP_EMAIL} | 📞 Mobile: +91-8806014060</p>
                 <p>Looking forward to connecting with you soon!</p>
             </div>
             <div class="footer">&copy; 2025 Vishal Portfolio | Built with ❤️ by Vishal Lengare</div>
